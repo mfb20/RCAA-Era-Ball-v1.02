@@ -23,14 +23,30 @@ jobs:
     steps:
       - name: Check out game
         uses: actions/checkout@v4
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
+
+      - name: Build multiplayer site
+        run: |
+          mkdir -p _site
+          cp multiplayer.html _site/index.html
+          cp multiplayer.html _site/multiplayer.html
+          cp styles.css _site/styles.css
+          cp multiplayer.css _site/multiplayer.css
+          cp supabase-config.js _site/supabase-config.js
+          cp multiplayer-core.js _site/multiplayer-core.js
+          cp multiplayer-loader.js _site/multiplayer-loader.js
+          cp multiplayer.js _site/multiplayer.js
+          touch _site/.nojekyll
+
       - name: Upload game
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
+
       - name: Publish
         id: deployment
         uses: actions/deploy-pages@v4
