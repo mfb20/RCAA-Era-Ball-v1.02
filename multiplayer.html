@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#071018" />
+  <meta name="description" content="Play RCAA ERA BALL live with friends—no account required." />
+  <title>REB Multiplayer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./multiplayer.css" />
+</head>
+<body>
+  <div class="field-lines" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="./index.html"><span class="brand-mark">REB</span><span><strong>RCAA ERA BALL</strong><small>LIVE MULTIPLAYER</small></span></a>
+    <div class="mp-top-actions"><span id="connectionBadge" class="connection-badge">CONNECTING…</span><a class="rules-button link-button" href="./index.html">SOLO GAME</a></div>
+  </header>
+
+  <main class="mp-shell">
+    <section id="setupScreen" class="mp-card setup-card">
+      <p class="eyebrow">NO ACCOUNT REQUIRED</p><h1>ENTER THE <em>LOCKER ROOM</em></h1>
+      <p class="lede">Choose the names your friends will see. REB creates a temporary anonymous guest for this browser.</p>
+      <form id="guestForm" class="form-grid">
+        <label>DISPLAY NAME<input id="displayNameInput" maxlength="20" required placeholder="Your name" autocomplete="nickname" /></label>
+        <label>TEAM NAME<input id="teamNameInput" maxlength="24" required placeholder="Your franchise" /></label>
+        <button class="spin-button compact" type="submit">ENTER MULTIPLAYER</button>
+      </form>
+      <div id="setupError" class="error-box" hidden></div>
+    </section>
+
+    <section id="hubScreen" hidden>
+      <div class="mp-hero"><div><p class="eyebrow">ONLINE DRAFT ROOM</p><h1>PLAY WITH <em>FRIENDS</em></h1></div><button id="editGuestButton" class="reset-button">EDIT NAME</button></div>
+      <div class="mode-cards">
+        <article class="mp-card mode-card"><span class="mode-count">2P</span><h2>ERA DUEL</h2><p>Each owner plays an independent four-pick Classic draft. The higher final team OVR wins.</p><button class="spin-button compact create-mode" data-mode="duel">CREATE DUEL</button></article>
+        <article class="mp-card mode-card"><span class="mode-count">4P</span><h2>FANTASY SNAKE</h2><p>Draft 16 unique era cards, set four-player lineups, then simulate a six-game league and Bowl.</p><button class="spin-button compact create-mode" data-mode="fantasy">CREATE FANTASY</button></article>
+      </div>
+      <section class="mp-card lobby-browser"><div class="section-title"><div><p class="eyebrow">PUBLIC ROOMS</p><h2>JOIN A LOBBY</h2></div><button id="refreshLobbiesButton" class="reset-button">REFRESH</button></div><div id="lobbyList" class="lobby-list"></div></section>
+    </section>
+
+    <section id="roomScreen" hidden>
+      <div class="room-heading"><div><p class="eyebrow" id="roomMode">LOBBY</p><h1 id="roomName">ROOM</h1><p class="room-code">CODE <strong id="roomCode">—</strong></p></div><button id="leaveLobbyButton" class="reset-button">LEAVE</button></div>
+      <div id="roomNotice" class="status-line"></div>
+      <div id="seatGrid" class="seat-grid"></div>
+      <div class="room-controls"><button id="startLobbyButton" class="spin-button compact" hidden>START GAME</button></div>
+    </section>
+
+    <section id="duelScreen" hidden>
+      <div class="room-heading"><div><p class="eyebrow">2-PLAYER ERA DUEL</p><h1 id="duelLobbyName">DRAFT</h1></div><div id="duelProgress" class="connection-badge"></div></div>
+      <div class="duel-layout">
+        <div>
+          <section class="spin-deck mp-spin"><div class="reel-window"><div class="reel-season"><span>SEASON</span><strong id="duelSeason">—</strong></div><div class="reel-divider"></div><div class="reel-team"><span id="duelTeamName">WAITING</span><strong id="duelTeam">REB</strong></div></div><div class="action-stack"><button id="duelSpinButton" class="spin-button"><span>SPIN THE ERA</span></button><button id="duelRerollButton" class="reroll-button" disabled>REROLL <strong>1 / 1</strong></button></div></section>
+          <div id="duelMarket" class="mp-player-grid"></div>
+        </div>
+        <aside class="mp-card compact-roster"><p class="eyebrow">YOUR FRANCHISE</p><h2 id="duelTeamTitle">TEAM</h2><div id="duelRoster"></div><div class="big-ovr"><span>TEAM OVR</span><strong id="duelOvr">—</strong></div></aside>
+      </div>
+    </section>
+
+    <section id="fantasyScreen" hidden>
+      <div class="room-heading"><div><p class="eyebrow">4-PLAYER FANTASY</p><h1 id="fantasyLobbyName">SNAKE DRAFT</h1><p id="draftTurnText">WAITING FOR THE CLOCK</p></div><button id="fantasyLeaveButton" class="reset-button">LEAVE</button></div>
+      <div id="draftBoard" class="draft-board"></div>
+      <div id="fantasyDraftArea" class="fantasy-layout">
+        <div><div class="pool-tools"><input id="playerSearch" placeholder="Search player or team" /><select id="seasonFilter"><option value="all">All seasons</option></select><select id="positionFilter"><option value="all">All positions</option><option>QB</option><option>WR</option><option>RUSH</option><option>CB</option></select></div><div id="fantasyPool" class="fantasy-pool"></div></div>
+        <aside class="mp-card compact-roster"><p class="eyebrow">YOUR PICKS</p><div id="myFantasyRoster"></div></aside>
+      </div>
+      <section id="lineupArea" class="mp-card" hidden><div class="section-title"><div><p class="eyebrow">FINAL CHECK</p><h2>CONFIRM LINEUPS</h2></div><div class="big-ovr"><span>YOUR OVR</span><strong id="fantasyOvr">—</strong></div></div><p>REB automatically places your best four-player lineup. Each owner must lock in before the host can simulate.</p><div id="fantasyLineup" class="lineup-summary"></div><button id="readyButton" class="spin-button compact">LOCK IN LINEUP</button><button id="simulateButton" class="spin-button compact" hidden>CONFIRM &amp; SIMULATE SEASON</button></section>
+    </section>
+
+    <section id="resultsScreen" hidden><div id="resultsContent"></div><div class="results-actions"><button id="resultsHomeButton" class="spin-button compact">BACK TO LOBBIES</button></div></section>
+  </main>
+
+  <dialog id="createDialog" class="rules-dialog"><form id="createLobbyForm"><div class="dialog-bar"><span>CREATE LOBBY</span><button id="closeCreateButton" type="button">×</button></div><div class="dialog-body"><p class="eyebrow" id="createModeLabel">NEW GAME</p><h2>NAME YOUR LOBBY</h2><label class="dialog-label">LOBBY NAME<input id="lobbyNameInput" maxlength="32" required placeholder="Friday Night REB" /></label><button class="spin-button compact" type="submit">OPEN LOBBY</button><div id="createError" class="error-box" hidden></div></div></form></dialog>
+  <div id="toast" class="mp-toast" hidden></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3"></script>
+  <script src="./supabase-config.js"></script>
+  <script src="./player-pool.js"></script>
+  <script src="./multiplayer-core.js"></script>
+  <script src="./multiplayer.js"></script>
+</body>
+</html>
