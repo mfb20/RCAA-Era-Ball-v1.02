@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071018" />
+    <meta
+      name="description"
+      content="Spin through RCAA history, draft four two-way stars, and build the best ERA BALL roster."
+    />
+    <title>RCAA ERA BALL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,800&family=Inter:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="field-lines" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" id="brandHome" href="#game" aria-label="RCAA ERA BALL home">
+        <span class="brand-mark">REB</span>
+        <span>
+          <strong>RCAA ERA BALL</strong>
+          <small>BUILD ACROSS HISTORY</small>
+        </span>
+      </a>
+      <div class="top-actions">
+        <nav class="view-nav" aria-label="Main views">
+          <button class="active" id="gameViewButton" type="button">GAME</button>
+          <button id="achievementsViewButton" type="button">ACHIEVEMENTS</button>
+          <a class="multiplayer-nav" href="./multiplayer.html">MULTIPLAYER</a>
+        </nav>
+        <button class="rules-button" id="rulesButton" type="button">HOW TO PLAY</button>
+      </div>
+    </header>
+
+    <main id="game" class="game-shell">
+      <section class="game-stage" aria-labelledby="gameTitle">
+        <div class="stage-heading">
+          <div>
+            <p class="eyebrow">RCAA DRAFT ROOM</p>
+            <h1 id="gameTitle">BUILD YOUR <em>ERA TEAM</em></h1>
+          </div>
+          <div class="pick-counter" aria-live="polite">
+            <span>PICK</span>
+            <strong id="pickNumber">1</strong>
+            <small>/ <span id="pickTotal">4</span></small>
+          </div>
+        </div>
+
+        <div class="mode-switch" id="modeSwitch" aria-label="Draft mode">
+          <button class="active" id="classicModeButton" type="button">
+            <strong>CLASSIC</strong><small>4 picks · every player starts</small>
+          </button>
+          <button id="benchModeButton" type="button">
+            <strong>BENCH</strong><small>5 picks · choose four starters</small>
+          </button>
+        </div>
+
+        <div class="era-track" id="eraTrack" aria-label="RCAA season archive"></div>
+
+        <section class="spin-deck" aria-label="Season and team spinner">
+          <div class="reel-window" id="reelWindow">
+            <div class="reel-season">
+              <span>SEASON</span>
+              <strong id="reelSeason">—</strong>
+            </div>
+            <div class="reel-divider" aria-hidden="true"></div>
+            <div class="reel-team">
+              <span id="reelTeamName">WAITING FOR THE SPIN</span>
+              <strong id="reelTeam">REB</strong>
+            </div>
+          </div>
+          <div class="action-stack">
+            <button class="spin-button" id="spinButton" type="button">
+              <span class="spin-icon" aria-hidden="true">↻</span>
+              <span id="spinButtonText">SPIN THE ERA</span>
+              <small>SPACE</small>
+            </button>
+            <button class="reroll-button" id="rerollButton" type="button" disabled>
+              <span>REROLL ERA + TEAM</span>
+              <strong id="rerollCount">1 / 1</strong>
+            </button>
+          </div>
+        </section>
+
+        <div class="status-line" id="statusLine" aria-live="polite">
+          Spin to reveal a team, then draft one player.
+        </div>
+
+        <section class="player-market" id="playerMarket" aria-labelledby="marketTitle">
+          <div class="market-empty" id="marketEmpty">
+            <div class="empty-ball" aria-hidden="true">REB</div>
+            <h2>YOUR NEXT PICK STARTS HERE</h2>
+            <p>The spinner chooses a season and one RCAA team. You choose the player.</p>
+            <button class="spin-button compact start-season-button" id="startSeasonButton" type="button" hidden>START YOUR SEASON</button>
+          </div>
+          <div class="market-content" id="marketContent" hidden>
+            <div class="market-header">
+              <div>
+                <p class="eyebrow">ON THE BOARD</p>
+                <h2 id="marketTitle">SELECT ONE PLAYER</h2>
+              </div>
+              <p id="marketMeta"></p>
+            </div>
+            <div class="player-grid" id="playerGrid"></div>
+          </div>
+        </section>
+      </section>
+
+      <aside class="roster-panel" aria-labelledby="rosterTitle">
+        <div class="roster-heading">
+          <div>
+            <p class="eyebrow">YOUR FRANCHISE</p>
+            <h2 id="rosterTitle">TWO-WAY ROSTER</h2>
+          </div>
+          <button class="reset-button" id="resetButton" type="button">RESET</button>
+        </div>
+
+        <div class="scoreboard">
+          <div>
+            <span>OFF</span>
+            <strong id="offenseScore">—</strong>
+          </div>
+          <div class="team-score">
+            <span>TEAM OVR</span>
+            <strong id="teamScore">—</strong>
+            <small id="teamGrade">DRAFT 4</small>
+          </div>
+          <div>
+            <span>DEF</span>
+            <strong id="defenseScore">—</strong>
+          </div>
+        </div>
+
+        <p class="swap-hint" id="swapHint">Lineups automatically favor natural positions. Select a player, then select another slot to swap them.</p>
+
+        <div class="lineup-block">
+          <div class="lineup-label">
+            <span>OFFENSE</span>
+            <small id="offenseFormation">1 QB · 3 WR</small>
+          </div>
+          <div class="slot-list" id="offenseSlots"></div>
+        </div>
+
+        <div class="lineup-block">
+          <div class="lineup-label">
+            <span>DEFENSE</span>
+            <small id="defenseFormation">1 RUSH · 3 CB</small>
+          </div>
+          <div class="slot-list" id="defenseSlots"></div>
+        </div>
+
+        <div class="penalty-key">
+          <p><span class="key-dot natural"></span> Natural position</p>
+          <p><span class="key-dot oop"></span> QB→WR: −5% · RUSH↔CB: −8%</p>
+          <p><span class="key-dot severe"></span> WR at QB: −50%</p>
+          <p>★ Champ · M MVP · O OPOY · D DPOY · S SB MVP</p>
+        </div>
+      </aside>
+    </main>
+
+    <main class="achievements-page" id="achievementsPage" hidden>
+      <section class="achievements-hero">
+        <div>
+          <p class="eyebrow">REB TROPHY ROOM</p>
+          <h1>YOUR <em>ACHIEVEMENTS</em></h1>
+        </div>
+        <div class="achievement-progress"><strong id="achievementCount">0 / 7</strong><span>UNLOCKED</span></div>
+      </section>
+      <div class="achievement-grid" id="achievementGrid"></div>
+      <button class="spin-button compact return-game-button" id="returnGameButton" type="button">RETURN TO THE DRAFT</button>
+    </main>
+
+    <dialog class="rules-dialog" id="rulesDialog">
+      <div class="dialog-bar">
+        <span>REB RULEBOOK</span>
+        <button id="closeRulesButton" type="button" aria-label="Close rules">×</button>
+      </div>
+      <div class="dialog-body">
+        <p class="eyebrow">THE FORMAT</p>
+        <h2>TWO MODES. TWO SIDES. ONE TEAM.</h2>
+        <ol>
+          <li><strong>Spin the era.</strong> REB randomly selects one season and one team from that season.</li>
+          <li><strong>Draft one player.</strong> Every card carries an offensive and defensive position.</li>
+          <li><strong>Choose a mode.</strong> Classic drafts four starters. Bench drafts five players and lets you bench one on each side.</li>
+          <li><strong>Set your lineup.</strong> REB favors natural positions, but you can select two slots on the same side to swap them.</li>
+          <li><strong>Play the season.</strong> Go 3–3 or better to reach the playoffs. A 5–1 or 6–0 record earns the top seed and a Bowl bye.</li>
+        </ol>
+        <div class="rules-callout">
+          QB→WR: −5%. WR→QB: −50%. Rusher↔CB: −8%. MVP boosts the whole team. OPOY and DPOY boost their side even above a displayed 99. Championship and Super Bowl MVP traits improve playoff performance.
+        </div>
+        <p class="data-note">You get one total reroll per draft. It replaces both the rolled season and team. The hindsight result uses every roll from each pick, including the team you rerolled away.</p>
+      </div>
+    </dialog>
+
+    <dialog class="player-dialog" id="playerDialog">
+      <div class="profile-card">
+        <button class="profile-close" id="closePlayerButton" type="button" aria-label="Close player card">×</button>
+        <div class="profile-image-wrap">
+          <img id="profileImage" alt="" hidden />
+          <div class="profile-image-fallback" id="profileImageFallback" aria-hidden="true">REB</div>
+          <span class="profile-season" id="profileSeason">SEASON —</span>
+        </div>
+        <div class="profile-content">
+          <div class="profile-team" id="profileTeam">TEAM</div>
+          <h2 id="profileName">PLAYER</h2>
+          <div class="profile-traits" id="profileTraits"></div>
+          <p id="profileInfo"></p>
+          <div class="profile-ratings">
+            <div><span>OFFENSE</span><strong id="profileOffense">—</strong><small id="profileOffensePosition">—</small></div>
+            <div><span>DEFENSE</span><strong id="profileDefense">—</strong><small id="profileDefensePosition">—</small></div>
+          </div>
+          <button class="spin-button compact" id="profileDraftButton" type="button">DRAFT PLAYER</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="finish-overlay" id="finishOverlay" hidden>
+      <div class="finish-card">
+        <p class="eyebrow">RCAA SEASON CENTER</p>
+        <span class="finish-grade" id="finishGrade">A</span>
+        <h2 id="finishTitle">ERA TEAM COMPLETE</h2>
+        <p id="finishSummary"></p>
+        <div class="finish-scores">
+          <span>OFF <strong id="finishOffense">—</strong></span>
+          <span>OVR <strong id="finishOverall">—</strong></span>
+          <span>DEF <strong id="finishDefense">—</strong></span>
+        </div>
+        <div class="finish-trait" id="finishTrait"></div>
+        <section class="hindsight-panel" aria-labelledby="hindsightTitle">
+          <div class="playoff-heading">
+            <span id="hindsightTitle">HINDSIGHT REPORT</span>
+            <small id="hindsightVerdict"></small>
+          </div>
+          <div class="hindsight-scores">
+            <div><span>YOUR TEAM</span><strong id="builtOverall">—</strong></div>
+            <div><span>BEST POSSIBLE</span><strong id="perfectOverall">—</strong></div>
+            <div><span>DIFFERENCE</span><strong id="overallDifference">—</strong></div>
+          </div>
+          <p class="perfect-lineup" id="perfectLineup"></p>
+        </section>
+        <section class="season-panel" aria-labelledby="seasonTitle">
+          <div class="playoff-heading">
+            <span id="seasonTitle">6-GAME REGULAR SEASON</span>
+            <small id="seasonBoost"></small>
+          </div>
+          <div class="season-games" id="regularSeasonGames">
+            <p>Six opponents are waiting.</p>
+          </div>
+          <div class="season-standing" id="seasonStanding">SEASON NOT STARTED</div>
+          <div class="postseason-games">
+            <div class="playoff-game locked" id="semifinalGame">
+              <span>SEMIFINAL</span><strong>WAITING</strong><small>Seeds 2 and 3 play for the Bowl</small>
+            </div>
+            <div class="playoff-game locked" id="championshipGame">
+              <span>RCAA BOWL</span><strong>WAITING</strong><small>The 1 seed awaits</small>
+            </div>
+          </div>
+          <section class="stat-center" id="statCenter" hidden>
+            <div class="playoff-heading">
+              <span>YOUR TEAM'S SEASON STATS</span>
+              <small id="seasonStatSummary">REGULAR SEASON + PLAYOFFS</small>
+            </div>
+            <div class="stat-table-wrap" id="passingStats"></div>
+            <div class="stat-table-wrap" id="receivingStats"></div>
+            <div class="stat-table-wrap" id="defenseStats"></div>
+            <div class="season-awards" id="seasonAwards"></div>
+          </section>
+          <button class="spin-button compact" id="simulateSeasonButton" type="button">SIMULATE THE SEASON</button>
+        </section>
+        <button class="secondary-finish" id="playAgainButton" type="button">BUILD ANOTHER TEAM</button>
+        <button class="close-finish" id="closeFinishButton" type="button">VIEW MY LINEUP</button>
+      </div>
+    </div>
+
+    <div class="achievement-toast" id="achievementToast" role="status" aria-live="polite" hidden>
+      <span>ACHIEVEMENT UNLOCKED</span>
+      <strong id="achievementToastName"></strong>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
